@@ -16,7 +16,7 @@ func (fs *FileSystem) initialize() error {
 	return nil
 }
 
-func (fs *FileSystem) reinitialize() error {
+func (fs *FileSystem) Reinitialize() error {
 	if fs.cache == nil {
 		fs.initialize()
 	} else {
