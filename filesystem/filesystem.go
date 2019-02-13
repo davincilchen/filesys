@@ -6,26 +6,30 @@ import (
 	cache "github.com/patrickmn/go-cache"
 )
 
+//FileSystem is a
 type FileSystem struct {
 	cache *cache.Cache
 }
 
-func (fs *FileSystem) initialize() error {
+//Initialize is a
+func (fs *FileSystem) Initialize() error {
 	fs.cache = cache.New(cache.NoExpiration, 0)
 	spew.Dump(fs.cache)
 	return nil
 }
 
+//Reinitialize is a
 func (fs *FileSystem) Reinitialize() error {
 	if fs.cache == nil {
-		fs.initialize()
+		fs.Initialize()
 	} else {
 		fs.cache.Flush()
 	}
 	return nil
 }
 
-func (fs *FileSystem) uninitialize() error {
+//Uninitialize is a
+func (fs *FileSystem) Uninitialize() error {
 	fs.cache = nil
 	return nil
 }
