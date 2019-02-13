@@ -11,6 +11,7 @@ func main() {
 
 	fs := &tfs.FileSystem{}
 
+	fs.CheckAndInitCache()
 	fs.Reinitialize()
 
 	fs.Reinitialize()
