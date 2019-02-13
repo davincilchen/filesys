@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"reflect"
 
 	tfs "github.com/tronfs/filesystem"
 )
@@ -36,7 +37,31 @@ func main() {
 		if err != nil {
 			log.Println(err)
 		} else {
-			log.Println(raw)
+
+			switch raw.(type) {
+			case int:
+				log.Println("type= int")
+			case float64:
+				log.Println("type= float64")
+			case []byte:
+				log.Println("type= []byte")
+			// case []uint8:
+			// 	log.Println("type= []uint8")
+			default:
+				log.Println("type= unkonw")
+			}
+
+			fmt.Println("reflect.TypeOf(raw)=", reflect.TypeOf(raw))
+			log.Println("raw= ", raw)
+
+			data, ok := raw.([]byte)
+			if ok {
+				log.Println("check type is ok (type is []byte)")
+				log.Println("data is ", data)
+				log.Println("string of data is -> ", string(data[:]))
+			} else {
+				log.Println("check type is not ok")
+			}
 		}
 	}
 

@@ -78,7 +78,7 @@ func (fs *FileSystem) Get(key string) (interface{}, error) {
 		return data, nil
 	}
 
-	log.Println("Data not found")
+	log.Println("Data not found for key [", key, "]")
 
 	raw, err := ioutil.ReadFile(key)
 	if err != nil {
