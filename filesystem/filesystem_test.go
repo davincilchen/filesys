@@ -31,22 +31,52 @@ func TestFileSystem_Initialize(t *testing.T) {
 	}
 }
 
-//IO //TODO: close IO?
 func TestFileSystem_Reinitialize(t *testing.T) {
-	// tests := []struct {
-	// 	name    string
-	// 	fs      *FileSystem
-	// 	wantErr bool
-	// }{
-	// 	// TODO: Add test cases.
-	// }
-	// for _, tt := range tests {
-	// 	t.Run(tt.name, func(t *testing.T) {
-	// 		if err := tt.fs.Reinitialize(); (err != nil) != tt.wantErr {
-	// 			t.Errorf("FileSystem.Reinitialize() error = %v, wantErr %v", err, tt.wantErr)
-	// 		}
-	// 	})
-	// }
+
+	testFS := &afero.MemMapFs{}
+	fsutil := &afero.Afero{Fs: testFS}
+	filename := "this_exists.txt"
+	testFS.Create(filename)
+
+	data := "Programming today is a race between software engineers striving to " +
+		"build bigger and better idiot-proof programs, and the Universe trying " +
+		"to produce bigger and better idiots. So far, the Universe is winning."
+
+	if err := fsutil.WriteFile(filename, []byte(data), 0644); err != nil {
+		t.Error("WriteFile ", filename, " : ", err)
+	}
+
+	_, err := fsutil.ReadFile(filename)
+	if err != nil {
+		t.Error("ReadFile : error unexpected, can't read file [", filename, "]")
+	}
+
+	//..//
+	fs := &FileSystem{}
+	fs.Initialize(fsutil)
+
+	raw, err := fs.Get(filename)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		data, ok := raw.([]byte)
+		if ok {
+			res1 := string(data[:])
+			fmt.Println("get data before Uninitialize() is -> ", res1)
+		} else {
+			t.Error("check type is not ok")
+		}
+	}
+
+	testFS.Remove(filename) // ignore error
+
+	// --------------------------------------- //
+	fs.Uninitialize()
+	// --------------------------------------- //
+	_, err = fs.Get(filename)
+	if err != nil {
+		t.Error("Filesystem.Get() should have error after Filesystem.Uninitialize() and remove file.")
+	}
 }
 
 func TestFileSystem_Uninitialize(t *testing.T) {
@@ -91,7 +121,6 @@ func TestFileSystem_CheckOrInitCache(t *testing.T) {
 	}
 }
 
-//IO //TODO: close IO?
 func TestFileSystem_Get(t *testing.T) {
 	testFS := &afero.MemMapFs{}
 	fsutil := &afero.Afero{Fs: testFS}

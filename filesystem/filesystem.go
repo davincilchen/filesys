@@ -99,7 +99,7 @@ func (fs *FileSystem) Get(key string) (interface{}, error) {
 		return data, nil
 	}
 
-	log.Println("Data not found for key [", key, "]")
+	log.Println("Data not found for key [", key, "]", "Reload from file.")
 
 	if fs.file == nil {
 		return nil, fmt.Errorf("No ReadFile Interface")
