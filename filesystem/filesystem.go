@@ -9,10 +9,24 @@ import (
 	cache "github.com/patrickmn/go-cache"
 )
 
+//File is a
+type File interface {
+	ReadFile(filename string) ([]byte, error)
+}
+
+//Ioutil is a
+type Ioutil struct {
+}
+
+//ReadFile is a
+func (io *Ioutil) ReadFile(filename string) ([]byte, error) {
+	return ioutil.ReadFile(filename)
+}
+
 //FileSystem is a
 type FileSystem struct {
-	cache        *cache.Cache
-	ReadFileFunc func(string) ([]byte, error)
+	cache *cache.Cache
+	file  File
 }
 
 const (
@@ -23,6 +37,8 @@ const (
 //Initialize is a
 func (fs *FileSystem) Initialize() error {
 	fs.cache = cache.New(DefaultCacheExpiration, 0)
+	fs.file = &Ioutil{}
+
 	//spew.Dump(fs.cache)
 	return nil
 }
@@ -40,6 +56,7 @@ func (fs *FileSystem) Reinitialize() error {
 //Uninitialize is a
 func (fs *FileSystem) Uninitialize() error {
 	fs.cache = nil
+
 	return nil
 }
 
@@ -81,7 +98,11 @@ func (fs *FileSystem) Get(key string) (interface{}, error) {
 
 	log.Println("Data not found for key [", key, "]")
 
-	raw, err := ioutil.ReadFile(key)
+	if fs.file == nil {
+		return nil, fmt.Errorf("No ReadFile Interface")
+	}
+	//raw, err := ioutil.ReadFile(key)
+	raw, err := fs.file.ReadFile(key)
 	if err != nil {
 		return nil, err
 	}
