@@ -35,10 +35,13 @@ const (
 )
 
 //Initialize is a
-func (fs *FileSystem) Initialize() error {
+func (fs *FileSystem) Initialize(file File) error {
 	fs.cache = cache.New(DefaultCacheExpiration, 0)
-	fs.file = &Ioutil{}
-
+	if file == nil {
+		fs.file = &Ioutil{}
+	} else {
+		fs.file = file
+	}
 	//spew.Dump(fs.cache)
 	return nil
 }
@@ -46,7 +49,7 @@ func (fs *FileSystem) Initialize() error {
 //Reinitialize is a
 func (fs *FileSystem) Reinitialize() error {
 	if fs.cache == nil {
-		fs.Initialize()
+		fs.Initialize(nil)
 	} else {
 		fs.cache.Flush()
 	}
@@ -76,7 +79,7 @@ func (fs *FileSystem) CheckOrInitCache() (bool, error) {
 	found, err := fs.CheckCache()
 	if err != nil {
 		//log.Println(err)
-		fs.Initialize()
+		fs.Initialize(nil)
 	}
 
 	return found, nil
@@ -101,8 +104,7 @@ func (fs *FileSystem) Get(key string) (interface{}, error) {
 	if fs.file == nil {
 		return nil, fmt.Errorf("No ReadFile Interface")
 	}
-	//raw, err := ioutil.ReadFile(key)
-	raw, err := fs.file.ReadFile(key)
+	raw, err := fs.file.ReadFile(key) //raw, err := ioutil.ReadFile(key)
 	if err != nil {
 		return nil, err
 	}
