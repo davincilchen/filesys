@@ -11,7 +11,8 @@ import (
 
 //FileSystem is a
 type FileSystem struct {
-	cache *cache.Cache
+	cache        *cache.Cache
+	ReadFileFunc func(string) ([]byte, error)
 }
 
 const (
@@ -82,7 +83,6 @@ func (fs *FileSystem) Get(key string) (interface{}, error) {
 
 	raw, err := ioutil.ReadFile(key)
 	if err != nil {
-		//panic(err)
 		return nil, err
 	}
 

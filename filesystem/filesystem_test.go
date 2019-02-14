@@ -28,6 +28,7 @@ func TestFileSystem_Initialize(t *testing.T) {
 	}
 }
 
+//IO //TODO: close IO?
 func TestFileSystem_Reinitialize(t *testing.T) {
 	// tests := []struct {
 	// 	name    string
@@ -75,52 +76,19 @@ func TestFileSystem_CheckCache(t *testing.T) {
 }
 
 func TestFileSystem_CheckOrInitCache(t *testing.T) {
-	// tests := []struct {
-	// 	name    string
-	// 	fs      *FileSystem
-	// 	want    bool
-	// 	wantErr bool
-	// }{
-	// 	// TODO: Add test cases.
-	// }
-	// for _, tt := range tests {
-	// 	t.Run(tt.name, func(t *testing.T) {
-	// 		got, err := tt.fs.CheckOrInitCache()
-	// 		if (err != nil) != tt.wantErr {
-	// 			t.Errorf("FileSystem.CheckOrInitCache() error = %v, wantErr %v", err, tt.wantErr)
-	// 			return
-	// 		}
-	// 		if got != tt.want {
-	// 			t.Errorf("FileSystem.CheckOrInitCache() = %v, want %v", got, tt.want)
-	// 		}
-	// 	})
-	// }
+
+	fs := &FileSystem{}
+	fs.CheckOrInitCache()
+	hasCache, err := fs.CheckCache()
+	if err != nil {
+		t.Error("Shold not have error because of cache is initialized")
+	}
+	if hasCache != true {
+		t.Error("[hasCache] Shold be true because of cache is initialized")
+	}
 }
 
+//IO //TODO: close IO?
 func TestFileSystem_Get(t *testing.T) {
-	// type args struct {
-	// 	key string
-	// }
-	// tests := []struct {
-	// 	name    string
-	// 	fs      *FileSystem
-	// 	args    args
-	// 	want    interface{}
-	// 	wantErr bool
-	// }{
-	// 	// TODO: Add test cases.
-	// }
-	// for _, tt := range tests {
-	// 	t.Run(tt.name, func(t *testing.T) {
-	// 		got, err := tt.fs.Get(tt.args.key)
-	// 		if (err != nil) != tt.wantErr {
-	// 			t.Errorf("FileSystem.Get() error = %v, wantErr %v", err, tt.wantErr)
-	// 			return
-	// 		}
-	// 		if !reflect.DeepEqual(got, tt.want) {
-	// 			t.Errorf("FileSystem.Get() = %v, want %v", got, tt.want)
-	// 		}
-	// 	})
-	// }
 
 }
