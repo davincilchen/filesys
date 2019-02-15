@@ -78,7 +78,6 @@ func (fs *FileSystem) CheckOrInitCache() (bool, error) {
 
 	found, err := fs.CheckCache()
 	if err != nil {
-		//log.Println(err)
 		fs.Initialize(nil)
 	}
 

@@ -12,7 +12,6 @@ func TestFileSystem_Initialize(t *testing.T) {
 	fs := &FileSystem{}
 
 	hasCache, err := fs.CheckCache()
-	//log.Println(hasCache, err)
 	if err == nil {
 		t.Error("Shold have error because of cache is not initialized")
 	}
@@ -147,7 +146,6 @@ func TestFileSystem_Get(t *testing.T) {
 
 	var res1, res2 string = "", ""
 	// .. 1 read .. //
-	fmt.Println("******************************************")
 	raw, err := fs2.Get(filename)
 	if err != nil {
 		fmt.Println(err)
@@ -164,7 +162,6 @@ func TestFileSystem_Get(t *testing.T) {
 	testFS.Remove(filename) // ignore error
 
 	// .. 2 read after remove file .. //
-	fmt.Println("******************************************")
 	raw2, err := fs2.Get(filename)
 	if err != nil {
 		t.Error("Filesystem get error:", err)
